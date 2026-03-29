@@ -1,4 +1,4 @@
-# Cycle-Safe Referral Engine
+# Referral Safe
 
 Graph-based referral SaaS with cycle prevention, multi-level rewards, fraud detection, admin auth, and a React operations dashboard.
 
