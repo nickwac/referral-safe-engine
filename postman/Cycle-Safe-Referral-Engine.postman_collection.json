@@ -1,0 +1,485 @@
+{
+  "info": {
+    "_postman_id": "8b5d0d3c-3d31-4f4c-a95b-2f26dd74f001",
+    "name": "Cycle-Safe Referral Engine API",
+    "description": "Postman collection for the Cycle-Safe Referral Engine backend. Login or refresh first to populate the `access_token` collection variable. Cookie-based refresh/session routes rely on Postman's cookie jar after login.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "access_token", "value": "" },
+    { "key": "admin_email", "value": "admin@example.com" },
+    { "key": "admin_password", "value": "admin123" },
+    { "key": "super_admin_email", "value": "owner@example.com" },
+    { "key": "super_admin_password", "value": "Owner123!" },
+    { "key": "user_id", "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "member_id", "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "session_id", "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "org_id", "value": "00000000-0000-0000-0000-000000000001" },
+    { "key": "claim_child_id", "value": "00000000-0000-0000-0000-000000000000" },
+    { "key": "claim_parent_id", "value": "00000000-0000-0000-0000-000000000000" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "auth": { "type": "noauth" },
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/health", "host": ["{{base_url}}"], "path": ["health"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /auth/login (Org Admin)",
+          "auth": { "type": "noauth" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.access_token) { pm.collectionVariables.set('access_token', json.access_token); }",
+                  "if (json.org_id) { pm.collectionVariables.set('org_id', json.org_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "POST /auth/login (Super Admin)",
+          "auth": { "type": "noauth" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.access_token) { pm.collectionVariables.set('access_token', json.access_token); }",
+                  "if (json.org_id) { pm.collectionVariables.set('org_id', json.org_id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{super_admin_email}}\",\n  \"password\": \"{{super_admin_password}}\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "POST /auth/refresh",
+          "auth": { "type": "noauth" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.access_token) { pm.collectionVariables.set('access_token', json.access_token); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/refresh", "host": ["{{base_url}}"], "path": ["auth", "refresh"] }
+          }
+        },
+        {
+          "name": "POST /auth/logout",
+          "auth": { "type": "noauth" },
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/logout", "host": ["{{base_url}}"], "path": ["auth", "logout"] }
+          }
+        },
+        {
+          "name": "GET /auth/me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth", "me"] }
+          }
+        },
+        {
+          "name": "GET /auth/sessions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/sessions", "host": ["{{base_url}}"], "path": ["auth", "sessions"] }
+          }
+        },
+        {
+          "name": "POST /auth/sessions/revoke-others",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/sessions/revoke-others", "host": ["{{base_url}}"], "path": ["auth", "sessions", "revoke-others"] }
+          }
+        },
+        {
+          "name": "DELETE /auth/sessions/{session_id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/auth/sessions/{{session_id}}", "host": ["{{base_url}}"], "path": ["auth", "sessions", "{{session_id}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "GET /dashboard/metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/dashboard/metrics", "host": ["{{base_url}}"], "path": ["dashboard", "metrics"] }
+          }
+        },
+        {
+          "name": "GET /dashboard/activity",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard/activity?limit=25",
+              "host": ["{{base_url}}"],
+              "path": ["dashboard", "activity"],
+              "query": [{ "key": "limit", "value": "25" }]
+            }
+          }
+        },
+        {
+          "name": "POST /simulate",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reward_type\": \"fixed\",\n  \"reward_values\": [10, 5, 2],\n  \"max_depth\": 3,\n  \"projected_referrals\": 100,\n  \"base_amount\": 100\n}"
+            },
+            "url": { "raw": "{{base_url}}/simulate", "host": ["{{base_url}}"], "path": ["simulate"] }
+          }
+        },
+        {
+          "name": "POST /seed",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/seed", "host": ["{{base_url}}"], "path": ["seed"] }
+          }
+        },
+        {
+          "name": "WebSocket /dashboard/stream",
+          "request": {
+            "description": "Open this manually in a WebSocket client using the current bearer token: ws://localhost:8000/dashboard/stream?token={{access_token}}",
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/dashboard/stream?token={{access_token}}", "host": ["{{base_url}}"], "path": ["dashboard", "stream"], "query": [{ "key": "token", "value": "{{access_token}}" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rewards",
+      "item": [
+        {
+          "name": "GET /reward/config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/reward/config", "host": ["{{base_url}}"], "path": ["reward", "config"] }
+          }
+        },
+        {
+          "name": "PUT /reward/config",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"max_depth\": 3,\n  \"reward_type\": \"fixed\",\n  \"reward_values\": [10, 5, 2]\n}"
+            },
+            "url": { "raw": "{{base_url}}/reward/config", "host": ["{{base_url}}"], "path": ["reward", "config"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Referrals",
+      "item": [
+        {
+          "name": "POST /referral/claim",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"child_id\": \"{{claim_child_id}}\",\n  \"parent_id\": \"{{claim_parent_id}}\",\n  \"idempotency_key\": \"claim-001\",\n  \"base_amount\": 100,\n  \"expires_at\": null\n}"
+            },
+            "url": { "raw": "{{base_url}}/referral/claim", "host": ["{{base_url}}"], "path": ["referral", "claim"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET /user/search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/search?q=user&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["user", "search"],
+              "query": [
+                { "key": "q", "value": "user" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user?limit=25&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["user"],
+              "query": [
+                { "key": "limit", "value": "25" },
+                { "key": "offset", "value": "0" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /user/{user_id}/profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/user/{{user_id}}/profile", "host": ["{{base_url}}"], "path": ["user", "{{user_id}}", "profile"] }
+          }
+        },
+        {
+          "name": "PUT /user/{user_id}/status",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"suspended\",\n  \"reason\": \"Manual admin suspension for investigation\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/user/{{user_id}}/status", "host": ["{{base_url}}"], "path": ["user", "{{user_id}}", "status"] }
+          }
+        },
+        {
+          "name": "GET /user/{user_id}/graph",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/{{user_id}}/graph?depth=3",
+              "host": ["{{base_url}}"],
+              "path": ["user", "{{user_id}}", "graph"],
+              "query": [{ "key": "depth", "value": "3" }]
+            }
+          }
+        },
+        {
+          "name": "GET /user/{user_id}/rewards",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/user/{{user_id}}/rewards", "host": ["{{base_url}}"], "path": ["user", "{{user_id}}", "rewards"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fraud",
+      "item": [
+        {
+          "name": "GET /fraud/flags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/fraud/flags?limit=25&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["fraud", "flags"],
+              "query": [
+                { "key": "limit", "value": "25" },
+                { "key": "offset", "value": "0" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /fraud/{user_id}/flag",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Manual flag added by admin for suspicious referral behavior\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/fraud/{{user_id}}/flag", "host": ["{{base_url}}"], "path": ["fraud", "{{user_id}}", "flag"] }
+          }
+        },
+        {
+          "name": "POST /fraud/{user_id}/unflag",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"justification\": \"Manual review completed and account restored to active\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/fraud/{{user_id}}/unflag", "host": ["{{base_url}}"], "path": ["fraud", "{{user_id}}", "unflag"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "GET /admin/orgs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/admin/orgs", "host": ["{{base_url}}"], "path": ["admin", "orgs"] }
+          }
+        },
+        {
+          "name": "POST /admin/orgs",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Corp\",\n  \"domain\": \"acme.com\",\n  \"plan\": \"pro\",\n  \"max_users\": 1000,\n  \"max_depth\": 5,\n  \"api_rate_limit\": 60\n}"
+            },
+            "url": { "raw": "{{base_url}}/admin/orgs", "host": ["{{base_url}}"], "path": ["admin", "orgs"] }
+          }
+        },
+        {
+          "name": "PUT /admin/orgs/{org_id}/suspend",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{base_url}}/admin/orgs/{{org_id}}/suspend", "host": ["{{base_url}}"], "path": ["admin", "orgs", "{{org_id}}", "suspend"] }
+          }
+        },
+        {
+          "name": "POST /admin/seed-config",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{base_url}}/admin/seed-config", "host": ["{{base_url}}"], "path": ["admin", "seed-config"] }
+          }
+        },
+        {
+          "name": "GET /admin/audit-log",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/audit-log?limit=25&offset=0",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "audit-log"],
+              "query": [
+                { "key": "limit", "value": "25" },
+                { "key": "offset", "value": "0" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /admin/team",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/admin/team", "host": ["{{base_url}}"], "path": ["admin", "team"] }
+          }
+        },
+        {
+          "name": "POST /admin/team/invite",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manager@example.com\",\n  \"role\": \"manager\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/admin/team/invite", "host": ["{{base_url}}"], "path": ["admin", "team", "invite"] }
+          }
+        },
+        {
+          "name": "DELETE /admin/team/{member_id}",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{base_url}}/admin/team/{{member_id}}", "host": ["{{base_url}}"], "path": ["admin", "team", "{{member_id}}"] }
+          }
+        },
+        {
+          "name": "PUT /admin/team/{member_id}/role",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/team/{{member_id}}/role?role=manager",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "team", "{{member_id}}", "role"],
+              "query": [{ "key": "role", "value": "manager" }]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

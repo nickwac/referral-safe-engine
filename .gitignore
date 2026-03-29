@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.venv/
+env/
+backend/env/
+backend/.venv/
+frontend/node_modules/
+
+# Local env files
+.env
+backend/.env
+frontend/.env
+
+# Databases and local artifacts
+*.db
+*.sqlite
+*.sqlite3
+test_referral_engine.db
+backend/referral_engine.db
+
+# Temp and scratch files
+temp_*.md
+temp_*.txt
+tmp_*.md
+tmp_*.txt
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Tooling leftovers
+pytest-cache-files-*/
