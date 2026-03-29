@@ -102,27 +102,27 @@ Write path summary:
 ```text
 D:\Projects\Learning
 +-- backend/
-¦   +-- alembic/
-¦   +-- app/
-¦   ¦   +-- routes/
-¦   ¦   +-- services/
-¦   ¦   +-- auth.py
-¦   ¦   +-- config.py
-¦   ¦   +-- dag_engine.py
-¦   ¦   +-- database.py
-¦   ¦   +-- models.py
-¦   ¦   +-- schemas.py
-¦   +-- requirements.txt
-¦   +-- seed.py
+Â¦   +-- alembic/
+Â¦   +-- app/
+Â¦   Â¦   +-- routes/
+Â¦   Â¦   +-- services/
+Â¦   Â¦   +-- auth.py
+Â¦   Â¦   +-- config.py
+Â¦   Â¦   +-- dag_engine.py
+Â¦   Â¦   +-- database.py
+Â¦   Â¦   +-- models.py
+Â¦   Â¦   +-- schemas.py
+Â¦   +-- requirements.txt
+Â¦   +-- seed.py
 +-- frontend/
-¦   +-- src/
-¦   ¦   +-- components/
-¦   ¦   +-- api.js
-¦   ¦   +-- App.jsx
-¦   +-- package.json
+Â¦   +-- src/
+Â¦   Â¦   +-- components/
+Â¦   Â¦   +-- api.js
+Â¦   Â¦   +-- App.jsx
+Â¦   +-- package.json
 +-- postman/
-¦   +-- Cycle-Safe-Referral-Engine.postman_collection.json
-¦   +-- Cycle-Safe-Referral-Engine.local.postman_environment.json
+Â¦   +-- Cycle-Safe-Referral-Engine.postman_collection.json
+Â¦   +-- Cycle-Safe-Referral-Engine.local.postman_environment.json
 +-- ADMIN_PLAN.md
 +-- POSTMAN_TEST_FLOW.md
 +-- README.md
@@ -136,22 +136,9 @@ D:\Projects\Learning
 ## Local Setup
 
 ### 1. Database
-Create the database if needed:
-
-```powershell
-& 'C:\Program Files\PostgreSQL\18\bin\createdb.exe' -U postgres referral_db
-```
-
-Default connection used by this repo:
-
-```env
-DATABASE_URL=postgresql+asyncpg://postgres:1234@localhost:5432/referral_db
-```
+Create the database if needed
 
 ### 2. Backend
-
-```powershell
-cd D:\Projects\Learning\backend
 python -m venv env
 .\env\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -212,42 +199,8 @@ Implemented and testable:
 - cycle-safe claims
 - velocity fraud checks
 - reward propagation
-- org-scoped admin auth
+- organization-scoped admin auth
 - audit log read path
 - session revocation
 - user profile inspection
 - fraud manual flag and unflag
-
-Still incomplete or partially implemented:
-- full first-admin onboarding for a newly created org
-- fraud review queue workflow
-- campaign manager
-- payout approval queue
-- advanced webhooks/notifications
-- full team-management UI polish
-
-## GitHub Push Commands
-If this repo is already initialized:
-
-```powershell
-cd D:\Projects\Learning
-git status
-git add README.md POSTMAN_TEST_FLOW.md postman backend frontend
-
-git commit -m "Update docs and complete admin workflow features"
-git remote -v
-git push origin main
-```
-
-If the default branch is not `main`, replace it with your branch name.
-
-## Recommended Cleanup Before Push
-The repo root currently contains temporary and test artifacts that should usually not be committed, for example:
-- `temp_graph.md`
-- `temp_graph.txt`
-- `tmp_app.md`
-- `tmp_app.txt`
-- `test_referral_engine.db`
-- `pytest-cache-files-*`
-
-Before pushing, review `git status` and exclude anything that is not part of the actual project.
