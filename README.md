@@ -2,6 +2,14 @@
 
 Graph-based referral SaaS with cycle prevention, multi-level rewards, fraud detection, admin auth, and a React operations dashboard.
 
+## Screenshots
+
+### Dashboard Overview
+![Dashboard Overview](docs/screenshots/dashboard-overview.png)
+
+### User Profile Panel
+![User Profile Panel](docs/screenshots/user-profile.png)
+
 This repo currently contains:
 - FastAPI backend
 - PostgreSQL persistence with Alembic migrations
@@ -114,6 +122,8 @@ D:\Projects\Learning
 ¦   ¦   +-- schemas.py
 ¦   +-- requirements.txt
 ¦   +-- seed.py
++-- docs/
+¦   +-- screenshots/
 +-- frontend/
 ¦   +-- src/
 ¦   ¦   +-- components/
@@ -225,29 +235,3 @@ Still incomplete or partially implemented:
 - payout approval queue
 - advanced webhooks/notifications
 - full team-management UI polish
-
-## GitHub Push Commands
-If this repo is already initialized:
-
-```powershell
-cd D:\Projects\Learning
-git status
-git add README.md POSTMAN_TEST_FLOW.md postman backend frontend
-
-git commit -m "Update docs and complete admin workflow features"
-git remote -v
-git push origin main
-```
-
-If the default branch is not `main`, replace it with your branch name.
-
-## Recommended Cleanup Before Push
-The repo root currently contains temporary and test artifacts that should usually not be committed, for example:
-- `temp_graph.md`
-- `temp_graph.txt`
-- `tmp_app.md`
-- `tmp_app.txt`
-- `test_referral_engine.db`
-- `pytest-cache-files-*`
-
-Before pushing, review `git status` and exclude anything that is not part of the actual project.
